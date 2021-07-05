@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>base</title>
+</head>
+  <body>
+    <p>{{user}}</p>
+    <a href="/accounts/logout/">ログアウト</a><br>
+    <a href= "{% url 'snscreate' %}">投稿</a><br>
+    <a href= "{% url 'mysnsshow' %}">自分の投稿記事一覧</a><br>
+    <a href="/">ホーム画面</a><br>
+    {% block content %}
+    {% endblock %}
+  </body>
+</html>

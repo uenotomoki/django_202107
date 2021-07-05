@@ -1,0 +1,23 @@
+{% extends 'testApp/base.html' %}
+
+{% block content %}
+<body>
+    <h1>testApp</h1>
+    
+    <!-- 投稿内容一覧表示 -->
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>メッセージ</th>
+        </tr>
+        {% for item in data %}
+            <tr>
+                <td>{{item.user_id}}</td>
+                <td>{{item.message}}</td>
+                <td><a href="{% url 'snsdelete' item.id %}">Delete</a></td>
+
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+{% endblock %}
