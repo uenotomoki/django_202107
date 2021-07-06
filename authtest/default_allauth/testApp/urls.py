@@ -4,6 +4,7 @@ from .views import TopView,SnsCreateView,SnsDeleteView,MySnsShowView,SnsCommentV
 
 urlpatterns = [
     path('', TopView.as_view(), name='top'),
+    path('<int:num>', TopView.as_view(), name='top'),
     path('snscreate/', SnsCreateView.as_view(), name='snscreate'),
     path('snsdelete/<int:num>/', SnsDeleteView.as_view(), name='snsdelete'),
     path('mysnsshow/', MySnsShowView.as_view(), name='mysnsshow'),

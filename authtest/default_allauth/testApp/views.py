@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.db.models import Max
+from django.core.paginator import Paginator
 #from django.contrib.auth.decorators import login_required
 #from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
@@ -22,13 +23,23 @@ class TopView(TemplateView):
         }
 
     #@login_required
-    def get(self,request):
+    def get(self,request,num=1):
         if not request.user.is_active:
             return redirect('/accounts/login/')
 
         user = request.user
-        self.params['data'] = SnsMessageModel.objects.all()
-        self.params['data_user'] = User.objects.all()
+
+        data = SnsMessageModel.objects.all()
+        page = Paginator(data,3)
+        self.params['data'] = page.get_page(num)
+
+        data_user = User.objects.all()
+        page = Paginator(data_user,3)
+        self.params['data_user'] = page.get_page(num)
+        
+        #self.page_data = Paginator(self.params['data_user'])
+        
+
 
         for i in range(SnsMessageModel.objects.aggregate(Max('id'))['id__max'] + 1):
             if SnsMessageModel.objects.filter(id=i).count() != 0:

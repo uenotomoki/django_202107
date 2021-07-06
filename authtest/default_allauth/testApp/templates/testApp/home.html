@@ -24,5 +24,15 @@
             </tr>
         {% endfor %}
     </table>
+    {% if data.has_previous %}
+        <a href = "{% url 'top' %}" >&laquo;first</a>
+        <a href = "{% url 'top' %}{{data.previous_page_number}}">&laquo;prev</a>
+    {% endif %}
+    現在{{ data.number }}ページ目
+    {% if data.has_next %}
+        <a href = "{% url 'top' %}{{data.next_page_number}}">next&raquo;</a>
+        <a href = "{% url 'top' %}{{data.end_index}}">last&raquo;</a>
+    {% endif %}
+
 </body>
 {% endblock %}
