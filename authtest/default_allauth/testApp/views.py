@@ -1,4 +1,4 @@
-#cd django202107/authtest/default_allauth
+#cd django202107/github/pushtest/authtest/default_allauth
 #python manage.py runserver
 
 
@@ -12,6 +12,27 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import SnsMessageModel,SnsCommentModel
 from .forms import SnsMessageForm,SnsCommentForm
+
+from .forms import ImageForm
+
+from .models import Image
+
+def showall(request):
+    images = Image.objects.all()
+    context = {'images':images}
+    return render(request, 'testApp/showall.html', context)
+
+def upload(request):
+    if request.method == "POST":
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect(to='/testApp/showall/')
+    else:
+        form = ImageForm()
+
+    context = {'form':form}
+    return render(request, 'testApp/upload.html', context)
 
 class TopView(TemplateView):
     def __init__(self):
