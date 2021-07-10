@@ -5,22 +5,19 @@
     <h1>testApp</h1>    
     <!-- 投稿内容一覧表示 -->
     <table>
-        <tr>
-            <th>ユーザ名</th>
-            <th>メッセージ</th>
-        </tr>
         {% for item in data %}
             <tr>
+                <p>ユーザー名：
                 {% for auth_user in data_user %}
-                    <td>
                         {% if item.user_id == auth_user.id %}
                             {{auth_user.username}}
                         {% endif %}
-                    </td>
                 {% endfor %}
-                <td>{{item.message}}</td>
-                <td><a href="{% url 'snscommentcreate' item.id %}">コメント投稿</a></td>
-                <td><a href="{% url 'snscommentindex' item.id %}">コメント一覧</a>コメント数{{data_comment_num}}左の{{ forloop.counter }}番目の数</td>
+                </p>
+                <p>ユーザーコメント：<br>{{item.message}}</p>
+                <p><img src='/testApp{{ MEDIA_URL }}{{item.picture}}' style="width:300px;height:auto"></p>
+                <p><a href="{% url 'snscommentcreate' item.id %}">コメント投稿</a></p>
+                <p></p><a href="{% url 'snscommentindex' item.id %}">コメント一覧<a>コメント数{{data_comment_num}}左の{{ forloop.counter }}番目の数</p>
             </tr>
         {% endfor %}
     </table>

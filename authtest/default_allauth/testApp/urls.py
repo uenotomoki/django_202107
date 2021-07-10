@@ -12,6 +12,4 @@ urlpatterns = [
     path('mysnsshow/', MySnsShowView.as_view(), name='mysnsshow'),
     path('snscommentcreate/<int:num>/', SnsCommentView.as_view(), name='snscommentcreate'),
     path('snscommentindex/<int:num>/', SnsCommentIndex.as_view(), name='snscommentindex'),
-    path('showall/', views.showall, name='showall'),
-    path('upload/', views.upload, name='upload'),
 ]+  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

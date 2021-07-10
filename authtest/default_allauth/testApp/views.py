@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.db.models import Max
 from django.core.paginator import Paginator
+from django.utils import timezone
 #from django.contrib.auth.decorators import login_required
 #from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
@@ -15,24 +16,6 @@ from .forms import SnsMessageForm,SnsCommentForm
 
 from .forms import ImageForm
 from .models import Image
-
-
-def showall(request):
-    images = Image.objects.all()
-    context = {'images':images}
-    return render(request, 'testApp/showall.html', context)
-
-def upload(request):
-    if request.method == "POST":
-        form = ImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect(to='/testApp/showall/')
-    else:
-        form = ImageForm()
-
-    context = {'form':form}
-    return render(request, 'testApp/upload.html', context)
 
 class TopView(TemplateView):
     def __init__(self):
@@ -56,8 +39,7 @@ class TopView(TemplateView):
 
         data_user = User.objects.all()
         page = Paginator(data_user,3)
-        self.params['data_user'] = page.get_page(num)        
-        #self.page_data = Paginator(self.params['data_user'])
+        self.params['data_user'] = page.get_page(num)
 
         #投稿記事に対してのコメント数表示
         for i in range(SnsMessageModel.objects.aggregate(Max('id'))['id__max'] + 1):
@@ -82,7 +64,7 @@ class MySnsShowView(TemplateView):
             return redirect('/accounts/login/')
 
         user = request.user
-        self.params['data'] = SnsMessageModel.objects.filter(user_id=request.user.id)
+        self.params['data'] = SnsMessageModel.objects.filter(user_id=request.user.id).order_by('id').reverse()
         self.params['user'] = user
         return render(request,'testApp/mysnsshow.html',self.params)
 
@@ -111,6 +93,8 @@ class SnsCommentView(TemplateView):
         message = request.POST['message']
         snscreate = SnsCommentModel(snsmessagemodel_id = snsmessagemodel_id,message = message)
         snscreate.save()
+
+
         return render(request,'testApp/mysnsshow.html',self.params)
 
 class SnsCommentIndex(TemplateView):
@@ -172,6 +156,11 @@ class SnsCreateView(TemplateView):
         snscreate = SnsMessageModel(user_id = user_id,message = message,picture = picture)
         snscreate.save()
 
+
+
+        user = request.user
+        self.params['data'] = SnsMessageModel.objects.filter(user_id=request.user.id)
+        self.params['user'] = user
         return render(request,'testApp/mysnsshow.html',self.params)
 
 class SnsDeleteView(TemplateView):
