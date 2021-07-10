@@ -9,13 +9,14 @@
         <tr>
             <th>ID</th>
             <th>メッセージ</th>
+            <th>写真</th>
         </tr>
         {% for item in data %}
             <tr>
                 <td>{{item.user_id}}</td>
                 <td>{{item.message}}</td>
+                <td><img src='/testApp{{ MEDIA_URL }}{{item.picture}}' style="width:300px;height:auto"></td>
                 <td><a href="{% url 'snsdelete' item.id %}">Delete</a></td>
-
             </tr>
         {% endfor %}
     </table>

@@ -14,8 +14,8 @@ from .models import SnsMessageModel,SnsCommentModel
 from .forms import SnsMessageForm,SnsCommentForm
 
 from .forms import ImageForm
-
 from .models import Image
+
 
 def showall(request):
     images = Image.objects.all()
@@ -56,12 +56,10 @@ class TopView(TemplateView):
 
         data_user = User.objects.all()
         page = Paginator(data_user,3)
-        self.params['data_user'] = page.get_page(num)
-        
+        self.params['data_user'] = page.get_page(num)        
         #self.page_data = Paginator(self.params['data_user'])
-        
 
-
+        #投稿記事に対してのコメント数表示
         for i in range(SnsMessageModel.objects.aggregate(Max('id'))['id__max'] + 1):
             if SnsMessageModel.objects.filter(id=i).count() != 0:
                 snsmessagemodel_id = SnsMessageModel.objects.filter(id=i)
@@ -157,19 +155,21 @@ class SnsCreateView(TemplateView):
             'data':'',
         }
 
-    #@login_required
+    #ログインしていない場合ログイン画面に遷移
     def get(self,request):
         if not request.user.is_active:
             return redirect('/accounts/login/')
         return render(request,'testApp/snscreate.html',self.params)
 
     def post(self,request):
+        #ログインしていない場合ログイン画面に遷移
         if not request.user.is_active:
             return redirect('/accounts/login/')
         
         user_id = request.user.id
         message = request.POST['message']
-        snscreate = SnsMessageModel(user_id = user_id,message = message)
+        picture = request.FILES['picture']
+        snscreate = SnsMessageModel(user_id = user_id,message = message,picture = picture)
         snscreate.save()
 
         return render(request,'testApp/mysnsshow.html',self.params)
