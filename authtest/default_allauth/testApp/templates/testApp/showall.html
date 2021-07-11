@@ -1,8 +1,0 @@
-<h1>Your Album</h1>
-
-<h2><a href="{% url 'upload' %}">Upload more</a></h2>
-
-{% for image in images %}
-    <!-- アプリ名+MEDIA_ROOTを起点とした画像までのパス -->
-    <img src='/testApp{{ MEDIA_URL }}{{image.picture}}' style="width:300px;height:auto">
-{% endfor %}

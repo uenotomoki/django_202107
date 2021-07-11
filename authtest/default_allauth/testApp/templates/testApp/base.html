@@ -8,9 +8,10 @@
     <link rel="stylesheet" type="text/css" href="{% static 'testApp/css/style.css' %}">
 </head>
   <body>
-    <p>{{user}}</p>
+    <p>ログインユーザ名：{{user}}様</p>
     <a href="/accounts/logout/">ログアウト</a><br>
     <a href= "{% url 'snscreate' %}">投稿</a><br>
+    <a href= "{% url 'top' %}">記事一覧</a><br>
     <a href= "{% url 'mysnsshow' %}">自分の投稿記事一覧</a><br>
     <a href="/">ホーム画面</a><br>
     {% block content %}

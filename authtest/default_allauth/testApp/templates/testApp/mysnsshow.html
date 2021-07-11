@@ -2,19 +2,14 @@
 
 {% block content %}
 <body>
-    <h1>testApp</h1>
+    <h1>投稿記事一覧</h1>
     
     <!-- 投稿内容一覧表示 -->
     <table>
-        <tr>
-            <th>ID</th>
-            <th>メッセージ</th>
-            <th>写真</th>
-        </tr>
         {% for item in data %}
             <tr>
                 <p>ユーザー名：{{user.username}}</p>
-                <p>コメント：<br>{{item.message}}</p>
+                <p>コメント：<br>{{item.message|linebreaks}}</p>
                 <p><img src='/testApp{{ MEDIA_URL }}{{item.picture}}' style="width:300px;height:auto"></p>
                 <p><a href="{% url 'snsdelete' item.id %}">Delete</a></p>
             </tr>

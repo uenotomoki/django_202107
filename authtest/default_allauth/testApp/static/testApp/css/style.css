@@ -1,15 +1,15 @@
 body{
-    color:gray;
+    color:black;
     font-size: 16pt;
 }
 
 h1{
     color: red;
-    opacity: 0.2;
+    opacity: 1;
     font-size: 60pt;
     margin-top: -20px;
     margin-bottom: 0px;
-    text-align: right;
+    text-align: left;
 }
 
 p{

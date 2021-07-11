@@ -94,7 +94,9 @@ class SnsCommentView(TemplateView):
         snscreate = SnsCommentModel(snsmessagemodel_id = snsmessagemodel_id,message = message)
         snscreate.save()
 
-
+        user = request.user
+        self.params['data'] = SnsMessageModel.objects.filter(user_id=request.user.id).order_by('id').reverse()
+        self.params['user'] = user
         return render(request,'testApp/mysnsshow.html',self.params)
 
 class SnsCommentIndex(TemplateView):
