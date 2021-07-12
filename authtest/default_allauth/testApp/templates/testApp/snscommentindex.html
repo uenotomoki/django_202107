@@ -19,7 +19,7 @@
     <table>
         {% for item in data_comment %}
             <tr>
-                <td>{{item.message}}</td>
+                <td>{{item.message|linebreaks}}</td>
             </tr>
         {% endfor %}
     </table>
