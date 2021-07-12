@@ -46,7 +46,6 @@ class TopView(TemplateView):
         for i in range(SnsMessageModel.objects.aggregate(Max('id'))['id__max'] + 1):
             if SnsMessageModel.objects.filter(id=i).count() != 0:
                 snsmessagemodel_id = SnsMessageModel.objects.filter(id=i)
-                print(snsmessagemodel_id)
                 self.params['data_comment_num'].append(SnsCommentModel.objects.filter(snsmessagemodel_id = snsmessagemodel_id[0]).count())
 
         return render(request,'testApp/home.html',self.params)
@@ -72,7 +71,6 @@ class TopView(TemplateView):
         for i in range(SnsMessageModel.objects.aggregate(Max('id'))['id__max'] + 1):
             if SnsMessageModel.objects.filter(id=i).count() != 0:
                 snsmessagemodel_id = SnsMessageModel.objects.filter(id=i)
-                print(snsmessagemodel_id)
                 self.params['data_comment_num'].append(SnsCommentModel.objects.filter(snsmessagemodel_id = snsmessagemodel_id[0]).count())
 
         return render(request,'testApp/home.html',self.params)
@@ -90,6 +88,12 @@ class MySnsShowView(TemplateView):
             return redirect('/accounts/login/')
 
         return nexthtml.RenderMysnsshow().rendermysnsshow(request)
+
+    def post(self,request):
+        if not request.user.is_active:
+            return redirect('/accounts/login/')
+
+        return nexthtml.RenderMysnsshow().postrendermysnsshow(request)
 
 class SnsCommentView(TemplateView):
     def __init__(self):

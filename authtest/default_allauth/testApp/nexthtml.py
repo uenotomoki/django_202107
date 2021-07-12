@@ -21,3 +21,14 @@ class RenderMysnsshow:
         self.params['data'] = SnsMessageModel.objects.filter(user_id=user.id).order_by('id').reverse()
 
         return render(request,'testApp/mysnsshow.html',self.params)
+
+    def postrendermysnsshow(self,request):
+
+        #検索結果取得
+        search = request.POST['search']
+        
+        user = request.user
+        self.params['user'] = user
+        self.params['data'] = SnsMessageModel.objects.filter(message__icontains=search).filter(user_id=user.id).order_by('id').reverse()
+
+        return render(request,'testApp/mysnsshow.html',self.params)

@@ -3,6 +3,14 @@
 {% block content %}
 <body>
     <h1>投稿記事一覧</h1>
+
+    <!--検索テキストボックス-->
+    <form action="{% url 'mysnsshow' %}" method="post">
+        {% csrf_token %}
+        <label for="search">検索</label>
+        <input type="text" id="search" name="search">
+        <input type="submit" value="click">
+    </form>
     
     <!-- 投稿内容一覧表示 -->
     <table>
