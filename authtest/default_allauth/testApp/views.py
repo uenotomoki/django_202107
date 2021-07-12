@@ -33,7 +33,7 @@ class TopView(TemplateView):
         user = request.user
         self.params['user'] = user
 
-        #メッセージ情報の取得
+        #メッセージ情報の取得(ページネーション)
         data = SnsMessageModel.objects.all()
         page = Paginator(data,3)
         self.params['data'] = page.get_page(num)
@@ -42,6 +42,32 @@ class TopView(TemplateView):
         page = Paginator(data_user,3)
         self.params['data_user'] = page.get_page(num)
 
+        #投稿記事に対してのコメント数表示
+        for i in range(SnsMessageModel.objects.aggregate(Max('id'))['id__max'] + 1):
+            if SnsMessageModel.objects.filter(id=i).count() != 0:
+                snsmessagemodel_id = SnsMessageModel.objects.filter(id=i)
+                print(snsmessagemodel_id)
+                self.params['data_comment_num'].append(SnsCommentModel.objects.filter(snsmessagemodel_id = snsmessagemodel_id[0]).count())
+
+        return render(request,'testApp/home.html',self.params)
+
+    def post(self,request,num=1):
+        if not request.user.is_active:
+            return redirect('/accounts/login/')
+
+        #ログインユーザー情報を取得
+        user = request.user
+        self.params['user'] = user
+
+        #検索結果取得
+        search = request.POST['search']
+        data = SnsMessageModel.objects.filter(message__icontains=search)
+        page = Paginator(data,3)
+        self.params['data'] = page.get_page(num)
+
+        #ユーザー情報取得
+        self.params['data_user'] = User.objects.all()
+        
         #投稿記事に対してのコメント数表示
         for i in range(SnsMessageModel.objects.aggregate(Max('id'))['id__max'] + 1):
             if SnsMessageModel.objects.filter(id=i).count() != 0:
@@ -118,6 +144,7 @@ class SnsCommentIndex(TemplateView):
         if not request.user.is_active:
             return redirect('/accounts/login/')
         
+        #コメント検索機能
         self.params['num'] = num
         self.params['data_message'] = SnsMessageModel.objects.get(id=num)
         search = request.POST['search']

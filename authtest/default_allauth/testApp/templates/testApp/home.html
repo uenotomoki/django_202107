@@ -3,6 +3,14 @@
 {% block content %}
 <body>
     <h1>投稿内容一覧表示画面</h1>
+
+    <!--検索テキストボックス-->
+    <form action="{% url 'top' %}" method="post">
+        {% csrf_token %}
+        <label for="search">検索</label>
+        <input type="text" id="search" name="search">
+        <input type="submit" value="click">
+    </form>
     
     <!--ページネーション-->
     {% if data.has_previous %}
