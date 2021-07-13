@@ -8,6 +8,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import SnsMessageModel,SnsCommentModel
 from .forms import SnsMessageForm,SnsCommentForm
 
+#mysnsshow画面に遷移するクラス
 class RenderMysnsshow:
     def __init__(self):
         self.params = {
@@ -15,6 +16,7 @@ class RenderMysnsshow:
             'data':'',
         }
 
+    #mysnsshow画面に遷移する前に必要な情報を取得し遷移
     def rendermysnsshow(self,request):
         user = request.user
         self.params['user'] = user
@@ -22,6 +24,7 @@ class RenderMysnsshow:
 
         return render(request,'testApp/mysnsshow.html',self.params)
 
+    #検索テキストボックスからmysnsshow画面に遷移する前に必要な情報を取得し遷移
     def postrendermysnsshow(self,request):
 
         #検索結果取得

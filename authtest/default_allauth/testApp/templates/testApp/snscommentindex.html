@@ -2,10 +2,12 @@
 
 {% block content %}
 <body>
-    <h1>投稿画面</h1>
+    <h1>コメント一覧画面</h1>
     <tr>
         <td>ユーザ名：{{data_user.username}}</td><br>
-        <td>メッセージ{{data_message.message}}</td><br>
+        <td>メッセージ<br>
+            {{data_message.message}}</td><br>
+            <p><img src='/testApp{{ MEDIA_URL }}{{data_message.picture}}' style="width:300px;height:auto"></p>
         <td>に対してのコメントを一覧</td>
     </tr>
 

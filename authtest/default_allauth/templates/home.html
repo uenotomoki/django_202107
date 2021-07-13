@@ -7,10 +7,9 @@
 </head>
 <body>
     <a href = accounts/logout>ログアウト</a><br>
-    <h1>Hello, Wrold</h1>
-    <h2>login成功</h2>
+    <h1>login成功</h1>
     {% load account %}
-    {% user_display user %}<br>
+    ログインユーザー名：{% user_display user %}様<br>
     
     <a href = testApp>SNS</a>
 </body>

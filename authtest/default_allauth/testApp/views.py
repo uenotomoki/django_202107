@@ -75,6 +75,7 @@ class TopView(TemplateView):
 
         return render(request,'testApp/home.html',self.params)
 
+#自分の過去に投稿した記事一覧
 class MySnsShowView(TemplateView):
     def __init__(self):
         self.params = {
@@ -87,14 +88,17 @@ class MySnsShowView(TemplateView):
         if not request.user.is_active:
             return redirect('/accounts/login/')
 
+        #next.pyよりrender実行
         return nexthtml.RenderMysnsshow().rendermysnsshow(request)
 
     def post(self,request):
         if not request.user.is_active:
             return redirect('/accounts/login/')
 
+        #next.pyよりrender実行
         return nexthtml.RenderMysnsshow().postrendermysnsshow(request)
 
+#投稿記事に対してコメントを投稿
 class SnsCommentView(TemplateView):
     def __init__(self):
         self.params = {
@@ -103,11 +107,11 @@ class SnsCommentView(TemplateView):
             'data':'',
         }
 
-    #@login_required
     def get(self,request,num):
         if not request.user.is_active:
             return redirect('/accounts/login/')
 
+        #記事を投稿する
         self.params['data'] = SnsMessageModel.objects.get(id=num)
         self.params['data_user'] = User.objects.get(id=self.params['data'].user_id)
         return render(request,'testApp/snscommentcreate.html',self.params)
@@ -121,8 +125,10 @@ class SnsCommentView(TemplateView):
         snscreate = SnsCommentModel(snsmessagemodel_id = snsmessagemodel_id,message = message)
         snscreate.save()
 
+        #next.pyよりrender実行、mysnsshow.htmlに遷移(自分の過去に投稿した記事一覧)
         return nexthtml.RenderMysnsshow().rendermysnsshow(request)
 
+#投稿記事に対してのコメント一覧表示
 class SnsCommentIndex(TemplateView):
     def __init__(self):
         self.params = {
@@ -133,17 +139,19 @@ class SnsCommentIndex(TemplateView):
             'num':''
         }
 
-    #@login_required
+    #投稿記事に対してのコメント一覧表示
     def get(self,request,num):
         if not request.user.is_active:
             return redirect('/accounts/login/')
 
+        #投稿記事に対してのコメント一覧取得
         self.params['num'] = num
         self.params['data_message'] = SnsMessageModel.objects.get(id=num)
         self.params['data_comment'] = SnsCommentModel.objects.filter(snsmessagemodel_id=self.params['data_message'])
         self.params['data_user'] = User.objects.get(id=self.params['data_message'].user_id)
         return render(request,'testApp/snscommentindex.html',self.params)
 
+    #検索テキストボックスからpostを受け取る
     def post(self,request,num):
         if not request.user.is_active:
             return redirect('/accounts/login/')
@@ -155,8 +163,6 @@ class SnsCommentIndex(TemplateView):
         self.params['data_comment'] = SnsCommentModel.objects.filter(snsmessagemodel_id=self.params['data_message']).filter(message__icontains=search)
         self.params['data_user'] = User.objects.get(id=self.params['data_message'].user_id)
         return render(request,'testApp/snscommentindex.html',self.params)
-        #return render(request,'testApp/snscommentindex.html',{'num': num},self.params)
-        #return redirect('snscommentindex',num = num)
 
 #画像とコメントをアップロードするためのクラス
 class SnsCreateView(TemplateView):
@@ -178,23 +184,29 @@ class SnsCreateView(TemplateView):
         if not request.user.is_active:
             return redirect('/accounts/login/')
         
+        #アップロードされたコメントと画像をDB(SnsMessageModel)に保存
         user_id = request.user.id
         message = request.POST['message']
         picture = request.FILES['picture']
         snscreate = SnsMessageModel(user_id = user_id,message = message,picture = picture)
         snscreate.save()
 
+        #next.pyよりrender実行、mysnsshow.htmlに遷移(自分の過去に投稿した記事一覧)
         return nexthtml.RenderMysnsshow().rendermysnsshow(request)
 
+#投稿した記事を削除するクラス
 class SnsDeleteView(TemplateView):
     def __init__(self):
         self.params = {
             'data':'',
         }
+
+    #投稿した記事削除画面の遷移
     def get(self,request,num):
         self.params['data'] = SnsMessageModel.objects.get(id=num)
         return render(request,'testApp/snsdelete.html',self.params)
     
+    #投稿した記事を削除実行
     def post(self,request,num):
         data = SnsMessageModel.objects.get(id=num)
         data.delete()
