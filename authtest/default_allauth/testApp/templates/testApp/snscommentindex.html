@@ -8,22 +8,22 @@
         <td>メッセージ<br>
             {{data_message.message}}</td><br>
             <p><img src='/testApp{{ MEDIA_URL }}{{data_message.picture}}' style="width:300px;height:auto"></p>
-        <td>に対してのコメントを一覧</td>
+        <td>に対してのコメント一覧</td>
     </tr>
-
+    
     <form action="{% url 'snscommentindex' num %}" method="post">
         {% csrf_token %}
         <label for="search">検索</label>
         <input type="text" id="search" name="search">
         <input type="submit" value="click">
     </form>
+    <br>
 
-    <table>
+        <!--コメント一覧表示-->
         {% for item in data_comment %}
-            <tr>
-                <td>{{item.message|linebreaks}}</td>
-            </tr>
+            <div class="text-center bg-primary">コメント</div>
+                {{item.message|linebreaks}}
         {% endfor %}
-    </table>
+    
 </body>
 {% endblock %}

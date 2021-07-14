@@ -2,17 +2,18 @@
 
 {% block content %}
 <body>
-    <h1>投稿画面</h1>
+    <h1>コメント投稿画面</h1>
     <tr>
         <td>ユーザ名：{{data_user.username}}</td><br>
         <td>メッセージ：{{data.message}}</td><br>
+        <td><img src='/testApp{{ MEDIA_URL }}{{data.picture}}' style="width:300px;height:auto"></td><br>
         <td>に対してのコメントを投稿</td>
     </tr>
     <table>
         <form action="{% url 'snscommentcreate' data.id %}" method="post">
             {% csrf_token %}
-            {{form.as_table}}
-            <tr><td></td><td><input type="submit" value="click"></td></tr>
+            {{form.as_p}}
+            <input type="submit" value="コメント投稿">
         </form>
     </table>
 </body>
