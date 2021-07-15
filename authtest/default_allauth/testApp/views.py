@@ -1,7 +1,6 @@
 #cd django202107/github/pushtest/authtest/default_allauth
 #python manage.py runserver
 
-
 from django.views.generic import TemplateView
 from django.shortcuts import render
 from django.contrib.auth.models import User
