@@ -41,12 +41,13 @@ class TopView(TemplateView):
         page = Paginator(data_user,3)
         self.params['data_user'] = page.get_page(num)
 
+        """
         #投稿記事に対してのコメント数表示
         for i in range(SnsMessageModel.objects.aggregate(Max('id'))['id__max'] + 1):
             if SnsMessageModel.objects.filter(id=i).count() != 0:
                 snsmessagemodel_id = SnsMessageModel.objects.filter(id=i)
                 self.params['data_comment_num'].append(SnsCommentModel.objects.filter(snsmessagemodel_id = snsmessagemodel_id[0]).count())
-
+        """
         return render(request,'testApp/home.html',self.params)
 
     def post(self,request,num=1):
@@ -66,11 +67,13 @@ class TopView(TemplateView):
         #ユーザー情報取得
         self.params['data_user'] = User.objects.all()
         
+        """
         #投稿記事に対してのコメント数表示
         for i in range(SnsMessageModel.objects.aggregate(Max('id'))['id__max'] + 1):
             if SnsMessageModel.objects.filter(id=i).count() != 0:
                 snsmessagemodel_id = SnsMessageModel.objects.filter(id=i)
                 self.params['data_comment_num'].append(SnsCommentModel.objects.filter(snsmessagemodel_id = snsmessagemodel_id[0]).count())
+        """
 
         return render(request,'testApp/home.html',self.params)
 
@@ -124,8 +127,7 @@ class SnsCommentView(TemplateView):
         snscreate = SnsCommentModel(snsmessagemodel_id = snsmessagemodel_id,message = message)
         snscreate.save()
 
-        #next.pyよりrender実行、mysnsshow.htmlに遷移(自分の過去に投稿した記事一覧)
-        return nexthtml.RenderMysnsshow().rendermysnsshow(request)
+        return redirect('snscommentindex', num=num)
 
 #投稿記事に対してのコメント一覧表示
 class SnsCommentIndex(TemplateView):
@@ -209,4 +211,5 @@ class SnsDeleteView(TemplateView):
     def post(self,request,num):
         data = SnsMessageModel.objects.get(id=num)
         data.delete()
-        return redirect('/testApp/snscreate')
+        #next.pyよりrender実行、mysnsshow.htmlに遷移(自分の過去に投稿した記事一覧)
+        return nexthtml.RenderMysnsshow().rendermysnsshow(request)
