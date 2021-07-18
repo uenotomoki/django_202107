@@ -90,12 +90,6 @@ jmespath==0.10.0
 joblib==0.13.2
 json5==0.8.5
 jsonschema==3.0.2
-jupyter==1.0.0
-jupyter-client==5.3.3
-jupyter-console==6.0.0
-jupyter-core==4.5.0
-jupyterlab==1.1.4
-jupyterlab-server==1.0.6
 Keras==2.4.3
 Keras-Preprocessing==1.1.2
 keyring==18.0.0
@@ -112,9 +106,6 @@ matplotlib==3.1.1
 mccabe==0.6.1
 mecab-python3==1.0.3
 mistune==0.8.4
-mkl-fft==1.0.14
-mkl-random==1.1.0
-mkl-service==2.3.0
 mock==3.0.5
 more-itertools==7.2.0
 mpmath==1.1.0
