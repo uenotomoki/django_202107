@@ -24,6 +24,8 @@ MEDIA_URL = '/media/'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
+DEBUG = True #ローカルでDebugできるようになります
+
 #herokuの設定
 if not DEBUG:
     SECRET_KEY = os.environ['SECRET_KEY']
