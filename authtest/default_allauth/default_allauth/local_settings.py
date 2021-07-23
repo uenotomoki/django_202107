@@ -13,4 +13,3 @@ DATABASES = {
     }
 }
 
-DEBUG = True #ローカルでDebugできるようになります
